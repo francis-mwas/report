@@ -6,7 +6,6 @@
         <td>Roles</td>
     </tr>
     <tr>
-      
         <td>POST</td>
         <td>/api/v1/users</td>
         <td>create user account</td>
@@ -18,7 +17,6 @@
         <td>get all users</td>
         <td>admin</td>
     </tr>
-
     <tr>
      <td>GET</td>
         <td>/api/v1/users/<string: email></td>
@@ -31,14 +29,12 @@
         <td>get a specific user by username</td>
         <td>admin</td>
     </tr>
-
      <tr>
      <td>GET</td>
         <td>/api/v1/users/<int: id></td>
         <td>get a specific user by id</td>
         <td>admin</td>
     </tr>
-
     <tr>
      <td>POST</td>
         <td>/api/v1/incidents</td>
@@ -51,7 +47,6 @@
         <td>create new incident</td>
         <td>users</td>
     </tr>
-
     <tr>
      <td>GET</td>
         <td>/api/v1/incidents</td>
@@ -82,5 +77,4 @@
         <td>delete a specific incident by id</td>
         <td>users</td>
     </tr>
-
 </table>
