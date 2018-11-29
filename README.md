@@ -42,7 +42,6 @@
         <td>create new incident</td>
         <td>users</td>
     </tr>
-    
     <tr>
      <td>GET</td>
         <td>/api/v1/incidents</td>
