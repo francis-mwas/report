@@ -1,3 +1,4 @@
+<h2>Endpoints created</h2>
 <table>
     <tr>
         <td>Method</td>
