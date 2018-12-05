@@ -5,9 +5,9 @@ from flask_restful import Api
 # module imports
 from .incidents.incidents import Post_incidents, Get_specific_incident
 
-from auth.auth_views import Sign_up
+from .auth.auth_views import Sign_up
 
-from admin.admin_views import Incidents, All_users, Get_users_by_email, Get_user_by_id, Get_incident_by_id
+from .admin.admin_views import Incidents, All_users, Get_users_by_email, Get_user_by_id, Get_incident_by_id
 
 # create instance of our application.
 def create_app():
