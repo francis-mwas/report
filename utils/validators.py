@@ -20,7 +20,7 @@ class Validation:
     """ input strings must start with letters and can contain alphanumeric and special characters """
 
     def validate_input_strings(self, input_strings):
-        return re.match("^[a-zA-Z0-9.-_@]", input_strings)
+        return re.match("^[a-zA-Z0-9-\._@ ]+$", input_strings)
     """ checking whether a user is an admin or not """
 
     # def validate_if_is_admin(self, is_admin):

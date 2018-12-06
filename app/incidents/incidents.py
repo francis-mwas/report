@@ -1,12 +1,13 @@
 from flask_restful import Resource, reqparse
 from models.models import Incident, incidents, User, Users
 
-from utils import validators 
+from utils import validators
+
 class Post_incidents(Resource):
 
-    parsing = reqparse.RequestParser()
+    parsing = reqparse.RequestParser(bundle_errors=True)
 
-    parsing.add_argument("created_by", type=str, required=True)
+    parsing.add_argument("created_by",type=str ,required=True)
     parsing.add_argument("Type", type=str, required=True)
     parsing.add_argument("location", type=str, required=True)
     parsing.add_argument("status", type=str, required=True)
