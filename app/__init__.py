@@ -2,6 +2,8 @@
 from flask import Flask
 from flask_restful import Api
 
+from instance.config import app_config
+
 
 """blueprints"""
 from .admin import admin_blueprint as admin_blp
@@ -18,36 +20,36 @@ from .admin.admin_views import Incidents, All_users, Get_users_by_email, Get_use
 # create instance of our application.
 
 
-def create_app():
-    app = Flask(__name__)
+def create_app(config_name):
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_object(app_config[config_name])
+    app.config.from_pyfile('config.py')
+
 
     admin = Api(admin_blp)
     app.register_blueprint(admin_blp, url_prefix='/api/v1')
 
     auth = Api(auth_blp)
-    app.register_blueprint(auth_blp, url_prefix='/ap1/v1')
+    app.register_blueprint(auth_blp, url_prefix='/api/v1')
 
     incidents = Api(incidents_blp)
     app.register_blueprint(incidents_blp, url_prefix='/api/v1')
-
-
 
     """ admin endpoints """
     """get all users"""
     admin.add_resource(All_users, '/users')
     """get all incidents"""
-    admin.add_resource(Incidents, '/api/v1/incidents')
+    admin.add_resource(Incidents, '/incidents')
     """ get user by email """
     admin.add_resource(Get_users_by_email, '/users/<string:email>')
     """ get user by id """
     admin.add_resource(Get_user_by_id, '/users/<int:id>')
-    """ update the incident status """ 
+    """ update the incident status by id"""
     incidents.add_resource(Get_incident_by_id, '/incidents/<int:id>')
 
     # auth enpoints.
-    """ create users """
+    """ create account """
     auth.add_resource(Sign_up, '/users')
-
 
     # incidents endpoints.
     """create incidents"""
