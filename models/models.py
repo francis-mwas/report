@@ -1,4 +1,5 @@
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 incidents = []
 Users = []
 
@@ -39,7 +40,7 @@ class Incident:
 class User:
     user_id = 1
 
-    def __init__(self, firstname=None, lastname=None, othernames=None, email=None, phoneNumber=None, username=None, is_admin=None):
+    def __init__(self, firstname=None, lastname=None, othernames=None, email=None, phoneNumber=None, username=None, password=None, is_admin=None):
 
         self.firstname = firstname
         self.lastname = lastname
@@ -47,6 +48,8 @@ class User:
         self.email = email
         self.phoneNumber = phoneNumber
         self.username = username
+        if password:
+            self.pwhash = generate_password_hash(password)
         self.is_admin = is_admin
         self.id = User.user_id
         self.registeredOn = datetime.now().replace(second=0, microsecond=0)
@@ -61,6 +64,7 @@ class User:
             email=self.email,
             phoneNumber=self.phoneNumber,
             username=self.username,
+            password=self.pwhash,
             is_admin=self.is_admin,
             registeredOn=str(self.registeredOn)
         )

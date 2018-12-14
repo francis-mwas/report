@@ -15,6 +15,11 @@ class Validation:
         return re.match("^[a-zA-Z0-9]{4,}$", username)
     """ email must start not start with @ and can contain only one @ and must not end with @ """
 
+    def validate_password(self, password):
+        """validate for password """
+        return re.match("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[a-zA-Z0-9]{8,15}$",
+                        password)
+
     def validate_email(self, email):
         return re.match("[^@]+@[^@]+\.[^@]+$", email)
     """ input strings must start with letters and can contain alphanumeric and special characters """

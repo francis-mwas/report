@@ -1,7 +1,7 @@
 # installing dependancies.
 from flask import Flask
 from flask_restful import Api
-
+from flask_jwt_extended import JWTManager
 from instance.config import app_config
 
 
@@ -13,18 +13,19 @@ from .incidents import incident_blueprint as incidents_blp
 # module imports
 from .incidents.incidents import Post_incidents, Get_specific_incident
 
-from .auth.auth_views import Sign_up
+from .auth.auth_views import Sign_up, Login
 
 from .admin.admin_views import Incidents, All_users, Get_users_by_email, Get_user_by_id, Get_incident_by_id
 
 # create instance of our application.
 
-
+jwt = JWTManager()
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
 
+    jwt.init_app(app)
 
     admin = Api(admin_blp)
     app.register_blueprint(admin_blp, url_prefix='/api/v1')
@@ -48,8 +49,9 @@ def create_app(config_name):
     incidents.add_resource(Get_incident_by_id, '/incidents/<int:id>')
 
     # auth enpoints.
-    """ create account """
+    """ create account and login"""
     auth.add_resource(Sign_up, '/users')
+    auth.add_resource(Login, '/login')
 
     # incidents endpoints.
     """create incidents"""

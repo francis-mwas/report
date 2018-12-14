@@ -6,6 +6,7 @@ class Config:
     TESTING = False
     DATABASE_URL = 'sqlite://:memory:'
     CSRF_ENABLED = True
+    SECRET_KEY = 'mwas'
 
 
 class ProductionConfiguration(Config):

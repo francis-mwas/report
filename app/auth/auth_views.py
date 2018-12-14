@@ -1,5 +1,8 @@
 from flask import Flask
 from flask_restful import Resource, reqparse
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token
+import datetime
 
 from models.models import User, Users
 
@@ -15,6 +18,7 @@ class Sign_up(Resource):
     parser.add_argument('email', type=str, required=True)
     parser.add_argument('phoneNumber', type=str, required=True)
     parser.add_argument('username', type=str, required=True)
+    parser.add_argument('password', type=str, required=True)
     parser.add_argument('is_admin', type=bool, required=True)
 
     def post(self):
@@ -25,6 +29,7 @@ class Sign_up(Resource):
         email = data['email']
         phoneNumber = data['phoneNumber']
         username = data['username']
+        password  = data['password']
         is_admin = data['is_admin']
 
         validate = validators.Validation()
@@ -47,8 +52,36 @@ class Sign_up(Resource):
             return {"Message": f"{username} already taken, please try another"}, 400
 
         user = User(firstname, lastname, othernames, email,
-                    phoneNumber, username, bool(is_admin))
+                    phoneNumber, username,password, bool(is_admin))
         Users.append(user)
 
         return {"Message": f"{user.username} created successfully"}, 201
+
+class Login(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('username', type=str, required=True, help="This field cannot be empty, please fill the field")
+    parser.add_argument('password', type=str, required=True, help="The password field is required, please fill the field")
+
+    def post(self):
+        login_data = Login.parser.parse_args()
+
+        username = login_data['username']
+        password = login_data['password']
+
+        validations = validators.Validation()
+        if not validations.validate_username(username):
+            return {"Message": "username can only contain alphanumeric characters only and a minimum of 4 characters"}, 400
+        if not validations.validate_password(password):
+            return {"Message": "password field should start with a capital letter"
+                    " and include a number"}, 400
+        user = User().get_user_by_username(username)
+        
+        if user and check_password_hash(user.pwhash, password):
+            expires = datetime.timedelta(minutes=20)
+            access_token = create_access_token(user.username, expires_delta=expires)
+            return {'token': access_token, 'message': 'successfully logged in'}, 200
+        return {'message': 'user does not exist on this server'}, 404
+
+
+    
 
